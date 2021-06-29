@@ -9,7 +9,7 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 Start a local database:
 
 ```shell script
-docker run -e ARANGO_ROOT_PASSWORD=test -p 8529:8529 --rm arangodb:3.6
+docker run -e ARANGO_ROOT_PASSWORD=test -p 8529:8529 -d arangodb:3.7
 ``` 
 
 ## test
