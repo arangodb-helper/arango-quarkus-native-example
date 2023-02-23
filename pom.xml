@@ -34,22 +34,12 @@
             <version>7.0.0-ALPHA.2</version>
         </dependency>
         <dependency>
-            <groupId>com.arangodb</groupId>
-            <artifactId>vst-protocol</artifactId>
-            <version>7.0.0-ALPHA.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.arangodb</groupId>
-            <artifactId>jackson-serde-vpack</artifactId>
-            <version>7.0.0-ALPHA.2</version>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
+            <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

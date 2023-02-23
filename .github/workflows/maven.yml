@@ -21,4 +21,4 @@ jobs:
       - name: Start Database
         run: ./docker/start_db.sh
       - name: verify
-        run: mvn verify -Pnative
+        run: mvn integration-test -Pnative
