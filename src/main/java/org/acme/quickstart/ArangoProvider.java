@@ -1,7 +1,7 @@
 package org.acme.quickstart;
 
 import com.arangodb.ArangoDB;
-import com.arangodb.mapping.ArangoJack;
+import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
@@ -10,13 +10,12 @@ import javax.enterprise.inject.Produces;
  * @author Michele Rastelli
  */
 @Dependent
-public class ArangoConfiguration {
+public class ArangoProvider {
 
     @Produces
-    public ArangoDB arangoDB() {
+    public ArangoDB arangoDB(@ConfigProperties final ArangoConfig config) {
         return new ArangoDB.Builder()
-                .password("test")
-                .serializer(new ArangoJack())
+                .loadProperties(config)
                 .build();
     }
 
