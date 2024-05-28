@@ -1,10 +1,9 @@
-package org.acme.quickstart;
+package com.arangodb;
 
-import com.arangodb.ArangoDB;
 import com.arangodb.entity.ArangoDBVersion;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 /**
  * @author Michele Rastelli

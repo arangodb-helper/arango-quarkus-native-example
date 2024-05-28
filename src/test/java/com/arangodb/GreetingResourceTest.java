@@ -1,8 +1,8 @@
-package org.acme.quickstart;
+package com.arangodb;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.TestProfile;
 import org.junit.jupiter.api.Test;
+import io.quarkus.test.junit.TestProfile;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;

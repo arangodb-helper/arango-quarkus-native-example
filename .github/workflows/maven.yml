@@ -12,13 +12,16 @@ jobs:
       - uses: actions/checkout@v2
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
-          java-version: '17'
-          components: 'native-image'
+          java-version: '22.0.1'
+          distribution: 'graalvm-community'
+          cache: 'maven'
+          native-image-job-reports: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Info
         run: mvn -version
       - name: Start Database
         run: ./docker/start_db.sh
+        env:
+          SSL: true
       - name: verify
         run: mvn integration-test -Pnative

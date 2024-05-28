@@ -1,6 +1,5 @@
-package org.acme.quickstart;
+package com.arangodb;
 
-import com.arangodb.Protocol;
 import io.quarkus.test.junit.QuarkusTestProfile;
 
 import java.util.Collections;
