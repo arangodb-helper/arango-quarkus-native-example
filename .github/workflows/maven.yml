@@ -8,20 +8,29 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        shaded:
+          - 'true'
+          - 'false'
+
     steps:
       - uses: actions/checkout@v2
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '22.0.1'
+          java-version: '21.0.2'
           distribution: 'graalvm-community'
           cache: 'maven'
           native-image-job-reports: 'true'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Info
         run: mvn -version
+      - name: Deps tree
+        run: mvn dependency:tree -Dshaded=${{matrix.shaded}}
       - name: Start Database
         run: ./docker/start_db.sh
         env:
           SSL: true
       - name: verify
-        run: mvn integration-test -Pnative
+        run: mvn integration-test -Pnative -Dshaded=${{matrix.shaded}}

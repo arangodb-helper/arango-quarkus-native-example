@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.arangodb</groupId>
     <artifactId>arango-quarkus-native-example</artifactId>
@@ -15,6 +16,7 @@
         <quarkus.platform.version>3.10.1</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.2.5</surefire-plugin.version>
+        <adb.version>7.7.0-SNAPSHOT</adb.version>
     </properties>
 
     <dependencyManagement>
@@ -30,11 +32,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.arangodb</groupId>
-            <artifactId>arangodb-java-driver</artifactId>
-            <version>7.7.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest</artifactId>
@@ -135,6 +132,36 @@
                 <skipITs>false</skipITs>
                 <quarkus.native.enabled>true</quarkus.native.enabled>
             </properties>
+        </profile>
+        <profile>
+            <id>plain</id>
+            <activation>
+                <property>
+                    <name>!shaded</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.arangodb</groupId>
+                    <artifactId>arangodb-java-driver</artifactId>
+                    <version>${adb.version}</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>shaded</id>
+            <activation>
+                <property>
+                    <name>shaded</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.arangodb</groupId>
+                    <artifactId>arangodb-java-driver-shaded</artifactId>
+                    <version>${adb.version}</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 </project>
