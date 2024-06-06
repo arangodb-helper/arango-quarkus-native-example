@@ -3,6 +3,6 @@ package com.arangodb;
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
 @QuarkusIntegrationTest
-class GreetingResourceIT extends GreetingResourceTest {
+class ArangoResourceIT extends ArangoResourceTest {
     // Execute the same tests but in packaged mode.
 }

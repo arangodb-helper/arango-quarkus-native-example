@@ -9,12 +9,12 @@ import jakarta.ws.rs.core.MediaType;
 
 
 @Path("/version")
-public class GreetingResource {
+public class ArangoResource {
 
     private final ArangoService arangoService;
 
     @Inject
-    public GreetingResource(ArangoService arangoService) {
+    public ArangoResource(ArangoService arangoService) {
         this.arangoService = arangoService;
     }
 
