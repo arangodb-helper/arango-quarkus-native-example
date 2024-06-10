@@ -1,13 +1,13 @@
-package org.acme.quickstart;
+package com.arangodb;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.TestProfile;
 import org.junit.jupiter.api.Test;
+import io.quarkus.test.junit.TestProfile;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
-abstract class GreetingResourceTest {
+abstract class ArangoResourceTest {
     @Test
     void testVersionEndpoint() {
         String server = given()
@@ -23,10 +23,10 @@ abstract class GreetingResourceTest {
 
 @QuarkusTest
 @TestProfile(ProtocolProfile.HTTP_JSON.class)
-class HttpJsonGreetingResourceTest extends GreetingResourceTest {
+class HttpJsonArangoResourceTest extends ArangoResourceTest {
 }
 
 @QuarkusTest
 @TestProfile(ProtocolProfile.HTTP2_JSON.class)
-class Http2JsonGreetingResourceTest extends GreetingResourceTest {
+class Http2JsonArangoResourceTest extends ArangoResourceTest {
 }
