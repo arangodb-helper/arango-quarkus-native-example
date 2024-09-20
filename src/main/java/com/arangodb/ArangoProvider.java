@@ -1,9 +1,12 @@
 package com.arangodb;
 
+import com.arangodb.http.HttpProtocolConfig;
+import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import javax.net.ssl.SSLContext;
@@ -16,12 +19,20 @@ import java.security.KeyStore;
 @ApplicationScoped
 public class ArangoProvider {
 
+    private final Vertx vertx;
+
+    @Inject
+    public ArangoProvider(Vertx vertx) {
+        this.vertx = vertx;
+    }
+
     @Produces
     @Dependent
     public ArangoDB arangoDB(@ConfigProperties final ArangoConfig config) throws Exception {
         return new ArangoDB.Builder()
                 .loadProperties(config)
                 .sslContext(createSslContext(config))
+                .protocolConfig(HttpProtocolConfig.builder().vertx(vertx).build())
                 .build();
     }
 
@@ -31,8 +42,9 @@ public class ArangoProvider {
 
     private static SSLContext createSslContext(ArangoConfig config) throws Exception {
         var ks = KeyStore.getInstance(config.getTrustStoreType());
-        ks.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(config.getTrustStoreFile()),
-                config.getTrustStorePassword().toCharArray());
+        try (var is = Thread.currentThread().getContextClassLoader().getResourceAsStream(config.getTrustStoreFile())) {
+            ks.load(is, config.getTrustStorePassword().toCharArray());
+        }
         var tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(ks);
         var sc = SSLContext.getInstance("TLS");
