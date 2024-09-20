@@ -1,5 +1,6 @@
 package com.arangodb;
 
+import com.arangodb.config.ProtocolConfig;
 import com.arangodb.http.HttpProtocolConfig;
 import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -11,6 +12,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperties;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
+import java.lang.reflect.InvocationTargetException;
 import java.security.KeyStore;
 
 /**
@@ -32,7 +34,7 @@ public class ArangoProvider {
         return new ArangoDB.Builder()
                 .loadProperties(config)
                 .sslContext(createSslContext(config))
-                .protocolConfig(HttpProtocolConfig.builder().vertx(vertx).build())
+                .protocolConfig(createProtocolConfig())
                 .build();
     }
 
@@ -51,4 +53,23 @@ public class ArangoProvider {
         sc.init(null, tmf.getTrustManagers(), null);
         return sc;
     }
+
+    private ProtocolConfig createProtocolConfig() {
+        var builder = HttpProtocolConfig.builder();
+        if (!PackageVersion.SHADED) {
+            // Invoking com.arangodb.http.HttpProtocolConfig.Builder.vertx(Vertx) with reflection to avoid compilation
+            // errors when using the shaded profile. This is equivalent to: builder.vertx(vertx)
+            try {
+                //noinspection JavaReflectionMemberAccess
+                HttpProtocolConfig.Builder.class
+                        .getDeclaredMethod("vertx", Vertx.class)
+                        .invoke(builder, vertx);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return builder.build();
+    }
+
 }
